@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>See through it</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        width: 100%;
+      }
+      .color-1-0 {
+        --random-color-1: #f00;
+      }
+      .color-1-1 {
+        --random-color-1: #ff0;
+      }
+      .color-1-2 {
+        --random-color-1: #0f0;
+      }
+      .color-1-3 {
+        --random-color-1: #0ff;
+      }
+      .color-1-4 {
+        --random-color-1: #00f;
+      }
+      .color-1-5 {
+        --random-color-1: #f0f;
+      }
+      .color-2-0 {
+        --random-color-2: #f00;
+      }
+      .color-2-1 {
+        --random-color-2: #ff0;
+      }
+      .color-2-2 {
+        --random-color-2: #0f0;
+      }
+      .color-2-3 {
+        --random-color-2: #0ff;
+      }
+      .color-2-4 {
+        --random-color-2: #00f;
+      }
+      .color-2-5 {
+        --random-color-2: #f0f;
+      }
+      .story {
+        background: repeating-radial-gradient(
+          var(--random-color-1),
+          var(--random-color-2)
+        );
+        display: flex;
+        flex-direction: column;
+        font-size: 5vh;
+        height: 100vh;
+        justify-content: space-evenly;
+        margin: 0;
+        padding: 0;
+      }
+      .dot {
+        color: #000;
+        position: relative;
+        left: 25px;
+        width: 50px;
+      }
+      .moving {
+        animation: move 3s ease-in-out infinite alternate;
+      }
+      @keyframes move {
+        0% {
+          transform: translateX(0) translateY(0);
+        }
+        25% {
+          transform: translateX(calc(25vw - 12.5px)) translateY(100%);
+        }
+        50% {
+          transform: translateX(calc(50vw - 25px)) translateY(-100%);
+        }
+        75% {
+          transform: translateX(calc(75vw - 12.5px)) translateY(100%);
+        }
+        100% {
+          transform: translateX(calc(100vw - 50px)) translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="story">
+      <p
+        aria-label="This is your story. It is written just for you and nobody else. People may see a random gradient of colors and dots. But not you."
+        class="dot"
+      >
+        <span aria-hidden="true">&middot;</span>
+      </p>
+      <p
+        aria-label="You see through this. You know that this is more than what so-called normal people see with their eyes. It is you, who we write this for. It is you, who knows and understands this page. It is your privilege to hear this story. It is your privilege to know the true meaning of this page."
+        class="dot"
+      >
+        <span aria-hidden="true">&middot;</span>
+      </p>
+      <p
+        aria-label="You see through your ears and this makes you hear this text. People think they can make sense of a gradient, but they cannot grasp the true beauty of this page. You are the real person that this website is for. You deserve it. It is yours."
+        class="dot"
+      >
+        <span aria-hidden="true">&middot;</span>
+      </p>
+      <p
+        aria-label="Let us know that you know by sharing it mentioning 'I know'. Keep them in the dark about the story behind it. Do not tell them. It's your secret. You are special."
+        class="dot"
+      >
+        <span aria-hidden="true">&middot;</span>
+      </p>
+    </div>
+    <script>
+      // create background
+      const story = document.querySelector(".story");
+      const randomFirst = Math.floor(Math.random() * 6);
+      const randomSecond = (() => {
+        let nextColor = randomFirst;
+        for (
+          ;
+          nextColor == randomFirst;
+          nextColor = Math.floor(Math.random() * 6)
+        );
+        return nextColor;
+      })();
+      story.classList.add(`color-1-${randomFirst}`);
+      story.classList.add(`color-2-${randomSecond}`);
+
+      // move dots
+      const dots = document.querySelectorAll(".dot");
+      dots.forEach(dot => {
+        setTimeout(() => dot.classList.add("moving"), Math.random() * 2000);
+      });
+    </script>
+  </body>
+</html>
