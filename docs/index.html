@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" href="./favicon.png" type="image/png">
     <title>See through it</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
@@ -14,47 +15,52 @@
         padding: 0;
         width: 100%;
       }
-      .color-1-0 {
+      .color-0-0 {
         --random-color-1: #f00;
       }
-      .color-1-1 {
+      .color-0-1 {
         --random-color-1: #ff0;
       }
-      .color-1-2 {
+      .color-0-2 {
         --random-color-1: #0f0;
       }
-      .color-1-3 {
+      .color-0-3 {
         --random-color-1: #0ff;
       }
-      .color-1-4 {
+      .color-0-4 {
         --random-color-1: #00f;
       }
-      .color-1-5 {
+      .color-0-5 {
         --random-color-1: #f0f;
       }
-      .color-2-0 {
+      .color-1-0 {
         --random-color-2: #f00;
       }
-      .color-2-1 {
+      .color-1-1 {
         --random-color-2: #ff0;
       }
-      .color-2-2 {
+      .color-1-2 {
         --random-color-2: #0f0;
       }
-      .color-2-3 {
+      .color-1-3 {
         --random-color-2: #0ff;
       }
-      .color-2-4 {
+      .color-1-4 {
         --random-color-2: #00f;
       }
-      .color-2-5 {
+      .color-1-5 {
         --random-color-2: #f0f;
       }
       .story {
-        background: repeating-radial-gradient(
+        animation: bg 10s ease-in-out infinite alternate;
+        background: linear-gradient(
+          -45deg,
           var(--random-color-1),
+          var(--random-color-1),
+          var(--random-color-2),
           var(--random-color-2)
         );
+        background-size: 400%;
         display: flex;
         flex-direction: column;
         font-size: 5vh;
@@ -69,8 +75,28 @@
         left: 25px;
         width: 50px;
       }
+      .speed-0 {
+        --speed: 2500ms;
+      }
+      .speed-1 {
+        --speed: 3000ms;
+      }
+      .speed-2 {
+        --speed: 3500ms;
+      }
       .moving {
-        animation: move 3s ease-in-out infinite alternate;
+        animation: move var(--speed) ease-in-out infinite alternate;
+      }
+      @keyframes bg {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
       @keyframes move {
         0% {
@@ -119,26 +145,53 @@
       </p>
     </div>
     <script>
-      // create background
-      const story = document.querySelector(".story");
-      const randomFirst = Math.floor(Math.random() * 6);
-      const randomSecond = (() => {
-        let nextColor = randomFirst;
-        for (
-          ;
-          nextColor == randomFirst;
-          nextColor = Math.floor(Math.random() * 6)
-        );
-        return nextColor;
-      })();
-      story.classList.add(`color-1-${randomFirst}`);
-      story.classList.add(`color-2-${randomSecond}`);
+      const NUMBER_OF_COLORS = 6;
+      let bgChange = 0;
+      let lastFirstColor = Math.floor(Math.random() * NUMBER_OF_COLORS);
+      let lastSecondColor = getRandomColor(lastFirstColor);
+      let colorClasses = [];
+      for (let a = 0; a < 2; a++) {
+        for (let b = 0; b < NUMBER_OF_COLORS; b++) {
+          colorClasses.push(`color-${a}-${b}`);
+        }
+      }
 
-      // move dots
-      const dots = document.querySelectorAll(".dot");
-      dots.forEach(dot => {
-        setTimeout(() => dot.classList.add("moving"), Math.random() * 2000);
-      });
+      createBackground();
+      moveDots();
+      setInterval(createBackground, 5000);
+
+      function getRandomColor(except) {
+        let nextColor = except;
+        while (nextColor === except) {
+          nextColor = Math.floor(Math.random() * NUMBER_OF_COLORS);
+        }
+        return nextColor;
+      }
+
+      function createBackground() {
+        bgChange = (bgChange + 1) % 2;
+        const story = document.querySelector(".story");
+        const [randomFirst, randomSecond] =
+          bgChange === 0
+            ? [lastFirstColor, getRandomColor(lastFirstColor)]
+            : [getRandomColor(lastSecondColor), lastSecondColor];
+        story.classList.remove(...colorClasses);
+        story.classList.add(`color-0-${randomFirst}`);
+        story.classList.add(`color-1-${randomSecond}`);
+        lastFirstColor = randomFirst;
+        lastSecondColor = randomSecond;
+      }
+
+      function moveDots() {
+        const dots = document.querySelectorAll(".dot");
+        dots.forEach(dot => {
+          [0, 1, 2].forEach(s => {
+            dot.classList.remove(`speed-${s}`);
+            dot.classList.add(`speed-${Math.floor(Math.random() * 3)}`);
+          });
+          setTimeout(() => dot.classList.add("moving"), Math.random() * 2000);
+        });
+      }
     </script>
   </body>
 </html>
