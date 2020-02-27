@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" href="./favicon.png" type="image/png">
+    <link rel="icon" href="./favicon.png" type="image/png" />
     <title>See through it</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
@@ -79,9 +79,15 @@
         --speed: 2500ms;
       }
       .speed-1 {
-        --speed: 3000ms;
+        --speed: 2750ms;
       }
       .speed-2 {
+        --speed: 3000ms;
+      }
+      .speed-3 {
+        --speed: 3250ms;
+      }
+      .speed-4 {
         --speed: 3500ms;
       }
       .moving {
@@ -146,6 +152,7 @@
     </div>
     <script>
       const NUMBER_OF_COLORS = 6;
+      const NUMBER_OF_SPEEDS = 5;
       let bgChange = 0;
       let lastFirstColor = Math.floor(Math.random() * NUMBER_OF_COLORS);
       let lastSecondColor = getRandomColor(lastFirstColor);
@@ -185,10 +192,12 @@
       function moveDots() {
         const dots = document.querySelectorAll(".dot");
         dots.forEach(dot => {
-          [0, 1, 2].forEach(s => {
+          for (let s = 0; s < NUMBER_OF_SPEEDS; s++) {
             dot.classList.remove(`speed-${s}`);
-            dot.classList.add(`speed-${Math.floor(Math.random() * 3)}`);
-          });
+          }
+          dot.classList.add(
+            `speed-${Math.floor(Math.random() * NUMBER_OF_SPEEDS)}`
+          );
           setTimeout(() => dot.classList.add("moving"), Math.random() * 2000);
         });
       }
