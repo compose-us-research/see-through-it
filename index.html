@@ -75,24 +75,6 @@
         left: 25px;
         width: 50px;
       }
-      .speed-0 {
-        --speed: 2500ms;
-      }
-      .speed-1 {
-        --speed: 2750ms;
-      }
-      .speed-2 {
-        --speed: 3000ms;
-      }
-      .speed-3 {
-        --speed: 3250ms;
-      }
-      .speed-4 {
-        --speed: 3500ms;
-      }
-      .moving {
-        animation: move var(--speed) ease-in-out infinite alternate;
-      }
       @keyframes bg {
         0% {
           background-position: 0% 50%;
@@ -102,23 +84,6 @@
         }
         100% {
           background-position: 0% 50%;
-        }
-      }
-      @keyframes move {
-        0% {
-          transform: translateX(0) translateY(0);
-        }
-        25% {
-          transform: translateX(calc(25vw - 12.5px)) translateY(100%);
-        }
-        50% {
-          transform: translateX(calc(50vw - 25px)) translateY(-100%);
-        }
-        75% {
-          transform: translateX(calc(75vw - 12.5px)) translateY(100%);
-        }
-        100% {
-          transform: translateX(calc(100vw - 50px)) translateY(0);
         }
       }
     </style>
@@ -162,6 +127,13 @@
           colorClasses.push(`color-${a}-${b}`);
         }
       }
+      const moveAnimation = [
+        { transform: "translateX(0) translateY(0)" },
+        { transform: "translateX(calc(25vw - 12.5px)) translateY(100%)" },
+        { transform: "translateX(calc(50vw - 25px)) translateY(-100%)" },
+        { transform: "translateX(calc(75vw - 12.5px)) translateY(100%)" },
+        { transform: "translateX(calc(100vw - 50px)) translateY(0)" }
+      ];
 
       createBackground();
       moveDots();
@@ -192,13 +164,12 @@
       function moveDots() {
         const dots = document.querySelectorAll(".dot");
         dots.forEach(dot => {
-          for (let s = 0; s < NUMBER_OF_SPEEDS; s++) {
-            dot.classList.remove(`speed-${s}`);
-          }
-          dot.classList.add(
-            `speed-${Math.floor(Math.random() * NUMBER_OF_SPEEDS)}`
-          );
-          setTimeout(() => dot.classList.add("moving"), Math.random() * 2000);
+          dot.animate(moveAnimation, {
+            direction: "alternate",
+            duration: Math.random() * 3000 + 2000,
+            fill: "both",
+            iterations: Infinity
+          });
         });
       }
     </script>
