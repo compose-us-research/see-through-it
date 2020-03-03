@@ -70,7 +70,7 @@
         padding: 0;
       }
       .dot {
-        color: #fff;
+        color: rgba(0, 0, 0, 0.5);
         left: 25px;
         position: relative;
         text-shadow: 0 0 2px #000;
@@ -177,8 +177,8 @@
           setInterval(() => {
             animation.playbackRate = clamp(
               0.5,
-              animation.playbackRate + (Math.random() - 0.5),
-              5
+              animation.playbackRate + (Math.random() - 0.5) / 2,
+              3
             );
           }, Math.random() * 3 + 1000);
         });
